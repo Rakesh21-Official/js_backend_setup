@@ -6,12 +6,5 @@ mongoose.connect(uri)
     .then((data) => console.log('DB Connected!'))
     .catch((err) => { console.log(err, 'error'); })
 
-class Modal {
-    static async user() {
-        return mongoose.model('User', userSchema);
-    }
 
-    
-}
-
-module.exports = Modal
+exports.Users = mongoose.model('User', userSchema);
