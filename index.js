@@ -5,10 +5,10 @@ const Service = require('./src/service');
 require('dotenv').config()
 
 const app = express();
+const port = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cors())
-const port = process.env.PORT;
 
 // Define a route
 app.use('/api/',Service())

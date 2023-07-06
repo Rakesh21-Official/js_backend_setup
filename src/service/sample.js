@@ -1,7 +1,8 @@
 const express = require('express');
 const Postgres = require('../config/postgres');
-const HTTPResponseCode = require('../library/responsecode');
-const Modal = require('../modal');
+const { HTTPResponseCode } = require('../library/responsecode')
+const { ErrorCode } = require('../library/msgcode')
+const Modal = require('../modal/index')
 
 module.exports = () => {
     const router = express.Router({});
@@ -16,26 +17,27 @@ module.exports = () => {
             })
         } catch (error) {
             console.log(error, 'error');
-            res.status(HTTPResponseCode.INTERNAL_SERVER_ERROR).send({ 'error': error })
+            res.status(HTTPResponseCode.INTERNAL_SERVER_ERROR).send({ error: ErrorCode.INTERNAL_SERVER_ERROR })
         }
     });
 
     router.get('/mongo', async (req, res) => {
         try {
-            let result = await Modal.user()
-            let data = await result.find()  //to retrive list of data
-            // const newData = new result({  //to add the data
-            //     name: 'John Doe',
-            //     email: 'johndoe1@example.com',
-            //     password: 'password1234'
-            // })
-            // let data = newData.save().then(data => console.log(data, 'data')).catch(err => console.log(err, 'error'))
+            // let body = {
+            //     name: "sample",
+            //     email: "sample@gmail.com",
+            //     password: "sample"
+            // }
+            // let create = await Modal.Users.create(body)
+
+            let find = await Modal.Users.find({})
+
             return res.status(HTTPResponseCode.SUCCESS).send({
-                result: data
+                result: find ? find : create
             })
         } catch (error) {
             console.log(error, 'error');
-            res.status(HTTPResponseCode.INTERNAL_SERVER_ERROR).send({ 'error': error })
+            res.status(HTTPResponseCode.INTERNAL_SERVER_ERROR).send({ error: ErrorCode.INTERNAL_SERVER_ERROR })
         }
     })
 
